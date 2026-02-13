@@ -3,59 +3,44 @@
 <head>
     <title>Swetha ❤️ Visnu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #ff4e50, #fc913a, #f9d423, #ff4e50);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            text-align: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            background: black;
             color: white;
-            overflow-x: hidden;
+            text-align: center;
         }
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            margin-top: 80px;
         }
 
         h1 {
-            margin-top: 50px;
             font-size: 45px;
-            animation: fadeIn 2s ease-in-out;
         }
 
-        .heart {
-            font-size: 60px;
-            animation: beat 1s infinite;
-        }
-
-        @keyframes beat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(-20px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-
-        p {
+        #loveText {
+            font-size: 22px;
             width: 80%;
             margin: auto;
-            font-size: 20px;
-            line-height: 1.6;
-            animation: fadeIn 3s ease-in-out;
+            min-height: 120px;
         }
 
         #timer {
-            margin-top: 25px;
-            font-size: 22px;
-            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
         }
 
         .btn {
@@ -65,43 +50,29 @@
             border-radius: 30px;
             cursor: pointer;
             margin: 15px;
-            transition: 0.3s;
         }
 
         #yesBtn {
-            background: white;
-            color: #ff4e50;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
+            background: #ff2e63;
+            color: white;
         }
 
         #noBtn {
-            background: black;
-            color: white;
+            background: white;
+            color: black;
             position: absolute;
-        }
-
-        .footer {
-            margin-top: 60px;
-            font-size: 18px;
-            opacity: 0.8;
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Swetha ❤️ Visnu</h1>
-    <div class="heart">💖</div>
+<canvas id="fireworks"></canvas>
 
-    <p>
-        From 6th standard… 💫 <br><br>
-        Once we met in the auto and came towards a universe 
-        that cannot be broken by any universe 🫂🙈💋🧿 <br><br>
-        My Panda 🐼, I love you for your character,
-        your dusky beauty, and your innocent heart ❤️
-    </p>
+<div class="content">
+    <h1>Swetha ❤️ Visnu</h1>
+
+    <p id="loveText"></p>
 
     <div id="timer"></div>
 
@@ -109,42 +80,69 @@
 
     <button class="btn" id="yesBtn" onclick="yesClick()">YES ❤️</button>
     <button class="btn" id="noBtn" onmouseover="moveNo()">NO 😜</button>
+</div>
 
-    <div class="footer">
-        Forever Yours, <br> Visnu Kant ❤️
-    </div>
+<audio autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+</audio>
 
-    <script>
-        // Love Timer (Change year if needed)
-        var startDate = new Date("June 1, 2014 00:00:00").getTime();
+<script>
+    // Typewriter Love Letter
+    var text = "From 6th standard… 💫\nWe met in an auto and created a universe that cannot be broken 🫂\nMy Panda 🐼 I love your character, your dusky beauty and your innocent heart ❤️\nForever Yours, Visnu.";
+    var i = 0;
+    function typeWriter() {
+        if (i < text.length) {
+            document.getElementById("loveText").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+        }
+    }
+    typeWriter();
 
+    // Love Timer
+    var startDate = new Date("June 1, 2014 00:00:00").getTime();
+    setInterval(function() {
+        var now = new Date().getTime();
+        var distance = now - startDate;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").innerHTML =
+            "Together for 💕 " + days + " Days " + hours + " Hours " +
+            minutes + " Minutes " + seconds + " Seconds ❤️";
+    }, 1000);
+
+    function yesClick() {
+        alert("I Love You Forever My Panda 🐼❤️");
+        startFireworks();
+    }
+
+    function moveNo() {
+        var button = document.getElementById("noBtn");
+        button.style.left = Math.random() * window.innerWidth + "px";
+        button.style.top = Math.random() * window.innerHeight + "px";
+    }
+
+    // Simple Fireworks
+    var canvas = document.getElementById("fireworks");
+    var ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function startFireworks() {
         setInterval(function() {
-            var now = new Date().getTime();
-            var distance = now - startDate;
-
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("timer").innerHTML =
-                "We have been together for 💕<br>" +
-                days + " Days " + hours + " Hours " +
-                minutes + " Minutes " + seconds + " Seconds ❤️";
-        }, 1000);
-
-        function yesClick() {
-            alert("I Love You Forever My Panda 🐼❤️ - Visnu");
-        }
-
-        function moveNo() {
-            var button = document.getElementById("noBtn");
-            var x = Math.random() * (window.innerWidth - 100);
-            var y = Math.random() * (window.innerHeight - 50);
-            button.style.left = x + "px";
-            button.style.top = y + "px";
-        }
-    </script>
+            var x = Math.random() * canvas.width;
+            var y = Math.random() * canvas.height / 2;
+            ctx.fillStyle = "hsl(" + Math.random() * 360 + ",100%,50%)";
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }, 100);
+    }
+</script>
 
 </body>
 </html>
